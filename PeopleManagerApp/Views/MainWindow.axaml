@@ -1,0 +1,33 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="PeopleManagerApp.Views.MainWindow"
+        xmlns:vm="using:PeopleManagerApp.ViewModels"
+        x:DataType="vm:MainWindowViewModel"
+        Title="PeopleManagerApp">
+        
+        <StackPanel Margin="10" Spacing="10">
+                <TextBlock Text="People:" FontWeight="Bold" FontSize="18"/>
+                <ListBox 
+                        ItemsSource="{Binding People }">
+                        <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                                                <TextBlock Grid.Column="0" Text="{Binding Name}"/>
+                                                <Button Grid.Column="1" Content="Edit" HorizontalAlignment="Right"
+                                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).EditPersonCommand}"
+                                                        CommandParameter="{Binding}"/>
+                                                <Button Grid.Column="2" Content="Delete" HorizontalAlignment="Right"
+                                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeletePersonCommand}"
+                                                        CommandParameter="{Binding}"
+                                                />
+                                        </Grid>
+                                </DataTemplate>
+                        </ListBox.ItemTemplate>
+                </ListBox>
+                <Button Content="Add Person" Command="{Binding AddPersonCommand}"
+                        HorizontalAlignment="Center"/>
+        </StackPanel>
+</Window>
