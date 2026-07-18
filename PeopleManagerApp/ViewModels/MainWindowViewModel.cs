@@ -33,13 +33,24 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         _deletePersonCommand = new RelayCommand(DeletedPerson);
     }
 
-    /*public ObservableCollection<Person> People {get;} = [
+    private string _header = string.Empty;
+
+    public string Header
+    {
+        get => _header;
+        set
+        {
+            SetField(ref _header, value);
+        }
+    }
+
+    public ObservableCollection<Person> People {get;} = [
         new() { Name= "Hamouda",Age= "30"},
         new() { Name= "Wafae",Age= "22"}
-    ];*/
+    ];
     
     
-    public ObservableCollection<Person> People {get;} = new();
+    //public ObservableCollection<Person> People {get;} = new();
 
     private readonly RelayCommand _addPersonCommand;
     public ICommand AddPersonCommandCommand => _addPersonCommand;
@@ -86,7 +97,8 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
                 id = maxId+1;
             }
             else
-            {
+            { 
+                Header = "People";
                 id = 1;
             }
             People.Add(new Person()

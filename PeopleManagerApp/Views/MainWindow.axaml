@@ -9,7 +9,14 @@
         Title="PeopleManagerApp">
         
         <StackPanel Margin="10" Spacing="10">
-                <TextBlock Text="People:" FontWeight="Bold" FontSize="18"/>
+                <Grid RowDefinitions="Auto,Auto" >
+                        <Button Grid.Row="0" Width="200"
+                                HorizontalContentAlignment="Center"
+                                FontWeight="Bold"
+                                Content="Add Person" Command="{Binding AddPersonCommandCommand}"
+                                HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Row="1" Text="{Binding Header}" FontWeight="Bold" FontSize="18"/>
+                </Grid>
                 <ListBox 
                         ItemsSource="{Binding People }">
                         <ListBox.ItemTemplate>
@@ -27,7 +34,5 @@
                                 </DataTemplate>
                         </ListBox.ItemTemplate>
                 </ListBox>
-                <Button Content="Add Person" Command="{Binding AddPersonCommandCommand}"
-                        HorizontalAlignment="Center"/>
         </StackPanel>
 </Window>
