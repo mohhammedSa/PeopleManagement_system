@@ -90,4 +90,3 @@
 /home/hamouda/Mine/Programming/C#/Projects/DescktopProjects/Avalonia_Projects/PeopleManagerApp/PeopleManagerApp/obj/Debug/net8.0/PeopleManagerApp.pdb
 /home/hamouda/Mine/Programming/C#/Projects/DescktopProjects/Avalonia_Projects/PeopleManagerApp/PeopleManagerApp/obj/Debug/net8.0/PeopleManagerApp.genruntimeconfig.cache
 /home/hamouda/Mine/Programming/C#/Projects/DescktopProjects/Avalonia_Projects/PeopleManagerApp/PeopleManagerApp/obj/Debug/net8.0/ref/PeopleManagerApp.dll
-/home/hamouda/Mine/Programming/C#/Projects/DescktopProjects/Avalonia_Projects/PeopleManagerApp/PeopleManagerApp/obj/Debug/net8.0/PeopleManagerApp.sourcelink.json

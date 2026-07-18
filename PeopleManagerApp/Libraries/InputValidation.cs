@@ -2,7 +2,7 @@ namespace PeopleManagerApp.Libraries;
 
 public static class InputValidation
 {
-    public static string IsValidNumber(string strNumber)
+    public static string IsValidNumber(string? strNumber)
     {
         if(string.IsNullOrWhiteSpace(strNumber)) 
             return  "Field required.";
