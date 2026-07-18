@@ -11,37 +11,25 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         var vm = new MainWindowViewModel();
-        vm.OpenEditFormWindow = person =>
+        vm.OpenEditFormWindow = personCopy =>
         {
             var win = new EditPersonWindow("Edit Person Info");
-            var addEditVm = new AddEditPersonViewModel(vm.People, person)
-            {
-                ClosePage = win.Close
-            };
+            var addEditVm = new AddEditPersonViewModel(personCopy);
+            addEditVm.PersonSaved += vm.SavePerson;
+            addEditVm.OnDelete += vm.DeletePerson;
+            addEditVm.ClosePage = win.Close;
             win.DataContext = addEditVm;
             win.Show();
         };
-        vm.OpenAddPersonForm = () =>
+        vm.OpenAddPersonForm = () => 
         {
             var win = new EditPersonWindow("Add new Person");
-            var addVm = new AddEditPersonViewModel(vm.People)
-            {
-                ClosePage = win.Close
-            };
+            var addVm = new AddEditPersonViewModel();
+            addVm.PersonSaved += vm.SavePerson;
+            addVm.ClosePage = win.Close;
             win.DataContext = addVm;
             win.Show();
         };
         DataContext = vm;
-    }
-
-    private void OpenForm(string title, MainWindowViewModel vm)
-    {
-        var win = new EditPersonWindow(title);
-        win.Show();
-        var addVm = new AddEditPersonViewModel(vm.People)
-        {
-            ClosePage = win.Close
-        };
-        win.DataContext = addVm;
     }
 }

@@ -21,17 +21,25 @@ public sealed class Person : INotifyPropertyChanged
         return true;
     }
 
-    private string _name = string.Empty;
+    private int? _id;
 
-    public string Name
+    public int? Id
+    {
+        get => _id;
+        set => SetField(ref _id, value);
+    }
+
+    private string? _name = string.Empty;
+
+    public string? Name
     {
         get => _name;
         set => SetField(ref _name, value);
     }
 
-    private string _age = string.Empty;
+    private string? _age = string.Empty;
 
-    public string Age
+    public string? Age
     {
         get => _age;
         set => SetField(ref _age, value);

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using PeopleManagerApp.Models;
@@ -27,25 +28,28 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 
     public MainWindowViewModel()
     {
-        _addPerson = new RelayCommand(OpenAddForm);
+        _addPersonCommand = new RelayCommand(OpenAddForm);
         _editPersonCommand = new RelayCommand(OpenEditForm);
-        _deletePersonCommand = new RelayCommand(DeletePerson);
+        _deletePersonCommand = new RelayCommand(DeletedPerson);
     }
 
-    public ObservableCollection<Person> People {get;} = [
+    /*public ObservableCollection<Person> People {get;} = [
         new() { Name= "Hamouda",Age= "30"},
         new() { Name= "Wafae",Age= "22"}
-    ];
+    ];*/
+    
+    
+    public ObservableCollection<Person> People {get;} = new();
 
-    private readonly RelayCommand _addPerson;
-    public ICommand AddPersonCommand => _addPerson;
-    public Action? OpenAddPersonForm { get; set;}
+    private readonly RelayCommand _addPersonCommand;
+    public ICommand AddPersonCommandCommand => _addPersonCommand;
+    public Action OpenAddPersonForm { get; set;}
 
     private void OpenAddForm(object? _)
     {
-        OpenAddPersonForm?.Invoke();
+        OpenAddPersonForm.Invoke();
     }
-
+    
     private readonly RelayCommand _editPersonCommand;
     public ICommand EditPersonCommand => _editPersonCommand;
 
@@ -54,19 +58,58 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     {
         if (parameter is Person person)
         {
-            Console.WriteLine(person.Name);
-            OpenEditFormWindow?.Invoke(person);
+            Person personCopy = new ()
+            {
+                Id = person.Id,
+                Name = person.Name,
+                Age = person.Age
+            };
+            OpenEditFormWindow?.Invoke(personCopy);
+        }
+    }
+
+    public void SavePerson(Person? person)
+    {
+        if(person == null) return;
+        Person? found = People.FirstOrDefault(p => p.Id == person.Id);
+        if (found != null)
+        {
+            found.Name = person.Name;
+            found.Age = person.Age;
+        }
+        else
+        {
+            int? id = 0;
+            if (People.Any())
+            {
+                int? maxId = People.Max(p => p.Id);
+                id = maxId+1;
+            }
+            else
+            {
+                id = 1;
+            }
+            People.Add(new Person()
+            {
+                Id = id,
+                Name = person.Name,
+                Age = person.Age
+            });
         }
     }
 
     private readonly RelayCommand _deletePersonCommand;
     public ICommand DeletePersonCommand => _deletePersonCommand;
 
-    private void DeletePerson(object? parameter)
+    private void DeletedPerson(object? parameter)
     {
-        if (parameter is Person person)
-        {
-            People.Remove(person);
-        }
+        if(parameter is Person person) 
+            DeletePerson(person);
+    }
+    public void DeletePerson(Person? person)
+    {
+        if (person == null) return;
+        Person? found = People.FirstOrDefault(p => p.Id == person.Id);
+        if (found != null) People.Remove(found);
     }
 }

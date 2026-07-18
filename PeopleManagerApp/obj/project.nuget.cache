@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "QKHJ62ZOmSs=",
+  "dgSpecHash": "8pBt3fcxiqY=",
   "success": true,
   "projectFilePath": "/home/hamouda/Mine/Programming/C#/Projects/DescktopProjects/Avalonia_Projects/PeopleManagerApp/PeopleManagerApp/PeopleManagerApp.csproj",
   "expectedPackageFiles": [
@@ -35,7 +35,7 @@
     "/home/hamouda/.nuget/packages/skiasharp.nativeassets.win32/3.119.4/skiasharp.nativeassets.win32.3.119.4.nupkg.sha512",
     "/home/hamouda/.nuget/packages/system.io.pipelines/8.0.0/system.io.pipelines.8.0.0.nupkg.sha512",
     "/home/hamouda/.nuget/packages/tmds.dbus.protocol/0.92.0/tmds.dbus.protocol.0.92.0.nupkg.sha512",
-    "/home/hamouda/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.28/microsoft.netcore.app.host.linux-x64.8.0.28.nupkg.sha512"
+    "/home/hamouda/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.29/microsoft.netcore.app.host.linux-x64.8.0.29.nupkg.sha512"
   ],
   "logs": []
 }

@@ -27,7 +27,7 @@
                                 </DataTemplate>
                         </ListBox.ItemTemplate>
                 </ListBox>
-                <Button Content="Add Person" Command="{Binding AddPersonCommand}"
+                <Button Content="Add Person" Command="{Binding AddPersonCommandCommand}"
                         HorizontalAlignment="Center"/>
         </StackPanel>
 </Window>

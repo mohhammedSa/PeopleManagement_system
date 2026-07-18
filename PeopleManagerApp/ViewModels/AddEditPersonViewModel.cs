@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -34,26 +33,41 @@ public class AddEditPersonViewModel : INotifyPropertyChanged
         return true;
     }
 
-    public AddEditPersonViewModel(ObservableCollection<Person>? people = null, Person? person = null)
+    public AddEditPersonViewModel(Person? person = null)
     {
-        _people = people;
-        _person = person;
-        _mode = _person == null ? EnMode.AddMode : EnMode.EditMode;
+        _mode = person == null ? EnMode.AddMode : EnMode.EditMode;
         _saveCommand = new RelayCommand(SavePerson, CanSave);
         _deleteCommand = new RelayCommand(DeletePerson,CanDelete);
         _cancelCommand = new RelayCommand(Cancel);
 
-        if (_person == null) return;
-        PersonName = _person.Name;
-        PersonAge = _person.Age;
+        InitializePersonObject(person);
     }
+    
+    private Person? _person = new ();
+    
+    private void InitializePersonObject(Person? person)
+    {
+        if (person == null)
+        {
+            _person = new Person()
+            {
+                Id = null,
+                Name = "",
+                Age = ""
+            };
+        }
+        else
+        {
+            _person = person;
+            PersonName = _person.Name;
+            PersonAge = _person.Age;
+        }
+    }
+    
+    private string? _personName = string.Empty;
+    private string? _personAge = string.Empty;
 
-    private readonly ObservableCollection<Person>? _people;
-    private readonly Person? _person;
-    private string _personName = string.Empty;
-    private string _personAge = string.Empty;
-
-    public string PersonName
+    public string? PersonName
     {
         get => _personName;
         set
@@ -62,7 +76,7 @@ public class AddEditPersonViewModel : INotifyPropertyChanged
             _saveCommand.RaiseCanExecuteChanged();
         }
     }
-    public string PersonAge
+    public string? PersonAge
     {
         get => _personAge;
         set
@@ -91,45 +105,44 @@ public class AddEditPersonViewModel : INotifyPropertyChanged
     private readonly RelayCommand _saveCommand;
     public ICommand SaveCommand => _saveCommand;
     
-    private readonly RelayCommand _deleteCommand;
-    public ICommand DeleteCommand => _deleteCommand;
-    
-    
-    private readonly RelayCommand _cancelCommand;
-    public ICommand CancelCommand => _cancelCommand;
-    
-
-    public Action? ClosePage { get; set; }
-    private void SavePerson(object? _)
-    { 
-        if (_mode == EnMode.EditMode)
-        {
-            if (_person != null)
-            {
-                _person.Name = PersonName;
-                _person.Age = PersonAge;
-            }
-        }
-        else 
-            _people?.Add(new Person()
-            {
-             Name   = PersonName,
-             Age = PersonAge
-            });
+    private void SavePerson(object? parameter)
+    {
+        if(_person == null) return;
+        _person.Name = PersonName;
+        _person.Age = PersonAge;
+        OnPersonSaved(_person);
         ClosePage?.Invoke();
     }
-
+    
+    public event Action<Person?>? PersonSaved;
+    protected virtual void OnPersonSaved(Person? person)
+    {
+        PersonSaved?.Invoke(person);
+    }
+    
     private bool CanSave()
     {
         return !string.IsNullOrWhiteSpace(PersonName) && !string.IsNullOrWhiteSpace(PersonAge);
     }
+    
+    private readonly RelayCommand _deleteCommand;
+    public ICommand DeleteCommand => _deleteCommand;
+    
+    private readonly RelayCommand _cancelCommand;
+    public ICommand CancelCommand => _cancelCommand;
 
-    public void DeletePerson(object? _)
+    public Action? ClosePage { get; set; }
+    public event Action<Person?>? OnDelete;
+    
+    protected virtual void DeletePerson(Person? person)
     {
-        if(_people == null) return;
-        if (_person == null) return;
-        _people.Remove(_person);
-        ClosePage?.Invoke();
+        OnDelete?.Invoke(person);
+    }
+
+    public void DeletePerson(object? obj)
+    {
+            DeletePerson(_person);
+            ClosePage?.Invoke();
     }
 
     private bool CanDelete()
