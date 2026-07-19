@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using PeopleManagerApp.Models;
+using PeopleManagerApp.Services;
 
 namespace PeopleManagerApp.ViewModels;
 
@@ -26,12 +27,18 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         return true;
     }
 
-    public MainWindowViewModel()
+    public MainWindowViewModel(PeopleService peopleService)
     {
+        _peopleService = peopleService;
+        People = _peopleService.People;
         _addPersonCommand = new RelayCommand(OpenAddForm);
         _editPersonCommand = new RelayCommand(OpenEditForm);
         _deletePersonCommand = new RelayCommand(DeletedPerson);
     }
+
+    public ReadOnlyObservableCollection<Person> People { get; }
+    
+    private readonly PeopleService _peopleService;
 
     private string _header = string.Empty;
 
@@ -43,14 +50,6 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             SetField(ref _header, value);
         }
     }
-
-    public ObservableCollection<Person> People {get;} = [
-        new() { Name= "Hamouda",Age= "30"},
-        new() { Name= "Wafae",Age= "22"}
-    ];
-    
-    
-    //public ObservableCollection<Person> People {get;} = new();
 
     private readonly RelayCommand _addPersonCommand;
     public ICommand AddPersonCommandCommand => _addPersonCommand;
@@ -79,35 +78,13 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public void SavePerson(Person? person)
+    public void SavePerson(Person? person, AddEditPersonViewModel.EnMode mode)
     {
         if(person == null) return;
-        Person? found = People.FirstOrDefault(p => p.Id == person.Id);
-        if (found != null)
-        {
-            found.Name = person.Name;
-            found.Age = person.Age;
-        }
+        if(mode == AddEditPersonViewModel.EnMode.AddMode)
+            _peopleService.AddPerson(person);
         else
-        {
-            int? id = 0;
-            if (People.Any())
-            {
-                int? maxId = People.Max(p => p.Id);
-                id = maxId+1;
-            }
-            else
-            { 
-                Header = "People";
-                id = 1;
-            }
-            People.Add(new Person()
-            {
-                Id = id,
-                Name = person.Name,
-                Age = person.Age
-            });
-        }
+            _peopleService.UpdatePerson(person);
     }
 
     private readonly RelayCommand _deletePersonCommand;
@@ -121,7 +98,6 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     public void DeletePerson(Person? person)
     {
         if (person == null) return;
-        Person? found = People.FirstOrDefault(p => p.Id == person.Id);
-        if (found != null) People.Remove(found);
+        _peopleService.DeletePerson(person.Id);
     }
 }

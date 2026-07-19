@@ -10,13 +10,13 @@ namespace PeopleManagerApp.ViewModels;
 
 public class AddEditPersonViewModel : INotifyPropertyChanged
 {
-    enum  EnMode
+    public enum  EnMode
     {
         AddMode = 1,
         EditMode=2
     }
 
-    private readonly EnMode _mode;
+    public readonly EnMode Mode;
     
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -35,7 +35,7 @@ public class AddEditPersonViewModel : INotifyPropertyChanged
 
     public AddEditPersonViewModel(Person? person = null)
     {
-        _mode = person == null ? EnMode.AddMode : EnMode.EditMode;
+        Mode = person == null ? EnMode.AddMode : EnMode.EditMode;
         _saveCommand = new RelayCommand(SavePerson, CanSave);
         _deleteCommand = new RelayCommand(DeletePerson,CanDelete);
         _cancelCommand = new RelayCommand(Cancel);
@@ -51,7 +51,6 @@ public class AddEditPersonViewModel : INotifyPropertyChanged
         {
             _person = new Person()
             {
-                Id = null,
                 Name = "",
                 Age = ""
             };
@@ -114,10 +113,10 @@ public class AddEditPersonViewModel : INotifyPropertyChanged
         ClosePage?.Invoke();
     }
     
-    public event Action<Person?>? PersonSaved;
+    public event Action<Person?,EnMode>? PersonSaved;
     protected virtual void OnPersonSaved(Person? person)
     {
-        PersonSaved?.Invoke(person);
+        PersonSaved?.Invoke(person,Mode);
     }
     
     private bool CanSave()
@@ -147,7 +146,7 @@ public class AddEditPersonViewModel : INotifyPropertyChanged
 
     private bool CanDelete()
     {
-        return _mode == EnMode.EditMode;
+        return Mode == EnMode.EditMode;
     }
 
    private void Cancel(object? _)

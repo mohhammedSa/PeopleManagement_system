@@ -1,6 +1,7 @@
 using System;
 using Avalonia.Controls;
 using PeopleManagerApp.Models;
+using PeopleManagerApp.Services;
 using PeopleManagerApp.ViewModels;
 
 namespace PeopleManagerApp.Views;
@@ -9,8 +10,9 @@ public partial class MainWindow : Window
 {
     public MainWindow()
     {
+        var peopleService = new PeopleService();
         InitializeComponent();
-        var vm = new MainWindowViewModel();
+        var vm = new MainWindowViewModel(peopleService);
         vm.OpenEditFormWindow = personCopy =>
         {
             var win = new EditPersonWindow("Edit Person Info");

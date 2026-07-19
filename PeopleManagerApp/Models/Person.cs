@@ -21,9 +21,9 @@ public sealed class Person : INotifyPropertyChanged
         return true;
     }
 
-    private int? _id;
+    private int _id;
 
-    public int? Id
+    public int Id
     {
         get => _id;
         set => SetField(ref _id, value);
