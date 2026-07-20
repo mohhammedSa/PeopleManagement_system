@@ -27,7 +27,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         return true;
     }
 
-    public MainWindowViewModel(PeopleService peopleService)
+    public MainWindowViewModel(IPeopleService peopleService)
     {
         _peopleService = peopleService;
         People = _peopleService.People;
@@ -38,7 +38,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 
     public ReadOnlyObservableCollection<Person> People { get; }
     
-    private readonly PeopleService _peopleService;
+    private readonly IPeopleService _peopleService;
 
     private string _header = string.Empty;
 

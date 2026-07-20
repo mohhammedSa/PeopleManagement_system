@@ -10,7 +10,7 @@ public partial class MainWindow : Window
 {
     public MainWindow()
     {
-        var peopleService = new PeopleService();
+        IPeopleService peopleService = new PeopleService();
         InitializeComponent();
         var vm = new MainWindowViewModel(peopleService);
         vm.OpenEditFormWindow = personCopy =>

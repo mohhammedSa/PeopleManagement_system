@@ -4,7 +4,7 @@ using PeopleManagerApp.Models;
 
 namespace PeopleManagerApp.Services;
 
-public class PeopleService
+public class PeopleService : IPeopleService
 {
     private  readonly ObservableCollection<Person> _people = new();
     public ReadOnlyObservableCollection<Person> People { get; }
@@ -14,7 +14,7 @@ public class PeopleService
         People = new ReadOnlyObservableCollection<Person>(_people);
     }
 
-    private Person? FindPerson(int id)
+    public Person? FindPerson(int id)
     {
         return _people.FirstOrDefault(p => p.Id == id);
     }
